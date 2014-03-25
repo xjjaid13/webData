@@ -11,6 +11,6 @@ public interface IStoreData {
 	 * 存储文件
 	 * @return
 	 */
-	public boolean store(String content,String storeRootFile);
+	public boolean store(String content,String storeRootFile,String fileName);
 	
 }

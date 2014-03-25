@@ -6,9 +6,17 @@ package com.webClawer.grap.analysis.source;
  */
 public abstract class ASource implements ISource{
 
-	public String sourceMark;
+	private String sourceMark;
 	
 	ASource(String sourceMark){
+		this.setSourceMark(sourceMark);
+	}
+
+	public String getSourceMark() {
+		return sourceMark;
+	}
+
+	public void setSourceMark(String sourceMark) {
 		this.sourceMark = sourceMark;
 	}
 	

@@ -10,8 +10,9 @@ import com.util.Log;
 public class StoreDataHtml implements IStoreData{
 
 	@Override
-	public boolean store(String content,String storeRootFile) {
-		String fileName = storeRootFile + "/"+System.currentTimeMillis() + ".html";
+	public boolean store(String content,String storeRootFile,String fileName) {
+		FileHandle.createPath(storeRootFile);
+		fileName = storeRootFile + "/"+fileName;
 		boolean isSuccess = FileHandle.write(fileName, content);
 		if(isSuccess){
 			Log.Info(fileName + " 创建成功");

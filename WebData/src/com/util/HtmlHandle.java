@@ -1,5 +1,9 @@
 package com.util;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -132,5 +136,62 @@ public final class HtmlHandle {
 
 		return textStr;// 返回文本字符串
 	}
+	
+	public static String getWebCon(String domain) {
+		StringBuffer sb = new StringBuffer();
+		try {
+			java.net.URL url = new java.net.URL(domain);
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					url.openStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				sb.append(line);
+				sb.append("\n");
+			}
+			in.close();
+		} catch (Exception e) {
+			Log.Error("无法解析" + e.getMessage());
+		}
+		return sb.toString();
+	}
+	
+	public static String getDomain(String curl) {
+		URL url = null;
+		String q = "";
+		try {
+			url = new URL(curl);
+			q = url.getHost();
+			if(!q.startsWith("http")){
+				q = "http://" + q + ":" + url.getPort();
+			}
+		} catch (MalformedURLException e) {
+			Log.Error(e.getMessage());
+		}
+		url = null;
+		return q;
+	}
+	
+	public static String joinUrl(String curl, String file) {
+		URL url = null;
+		String q = "";
+		try {
+			url = new URL(new URL(curl), file);
+			q = url.toExternalForm();
+		} catch (MalformedURLException e) {
+			Log.Error(e.getMessage());
+		}
+		url = null;
+		if (q.indexOf("#") != -1)
+			q = q.replaceAll("^(.+?)#.*?$", "$1");
+		return q;
+	}
+	
+	public static void main(String[] args) {
+		String htmlContent = "3.5/sss";
+		Pattern pattern = Pattern.compile("(.+?).(.+?)/");
+		Matcher matcher = pattern.matcher(htmlContent);
+		System.out.println(matcher.find());
+	}
+	
 
 }

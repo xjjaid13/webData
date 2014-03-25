@@ -1,7 +1,6 @@
 package com.webClawer.grap.analysis.source;
 
-import org.jsoup.Jsoup;
-
+import com.util.HtmlHandle;
 import com.util.Log;
 
 /**
@@ -18,11 +17,26 @@ public class HtmlSource extends ASource{
 	@Override
 	public String getSourceContent() {
 		try{
-			return Jsoup.connect(super.sourceMark).get().toString();
+			return HtmlHandle.getWebCon(super.getSourceMark());
 		}catch(Exception e){
-			Log.Error(e.getMessage());
+			Log.Error(super.getSourceMark() + " 无法解析 :" + e.getMessage());
 			return null;
 		}
 	}
-
+	
+	public String returnHtmlName(){
+		int lastIndex = super.getSourceMark().lastIndexOf("/") + 1;
+		if(lastIndex >= super.getSourceMark().length()){
+			return System.currentTimeMillis() + "";
+		}else{
+			return super.getSourceMark().substring(lastIndex,super.getSourceMark().length());
+		}
+	}
+	
+	public static void main(String[] args) {
+		Seed seed = new Seed("http://wxjj.com.cn/datac/weblink/view/4");
+		String str = HtmlHandle.joinUrl("http://wxjj.com.cn", "/datac/weblink/view/4");
+		System.out.println(str);
+	}
+	
 }
