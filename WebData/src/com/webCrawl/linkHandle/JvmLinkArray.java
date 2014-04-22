@@ -1,6 +1,7 @@
-package com.webClawer.grap.analysis.source;
+package com.webCrawl.linkHandle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,9 @@ import java.util.Map;
  */
 public class JvmLinkArray implements ILinkArray{
 
-	private Map<String,Integer> linkMap = new HashMap<String,Integer>();
+	private Map<String,Integer> linkMap = Collections.synchronizedMap(new HashMap<String,Integer>());
 	
-	private List<String> waitUrlList = new ArrayList<String>();
+	private List<String> waitUrlList = Collections.synchronizedList(new ArrayList<String>());
 	
 	@Override
 	public void addNewLink(String url) {

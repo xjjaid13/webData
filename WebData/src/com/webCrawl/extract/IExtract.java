@@ -1,4 +1,4 @@
-package com.webClawer.grap.analysis.extract;
+package com.webCrawl.extract;
 
 import java.util.List;
 

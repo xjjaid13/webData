@@ -1,4 +1,4 @@
-package com.webClawer.grap.analysis.filter;
+package com.webCrawl.filter;
 
 /**
  * @author Taylor

@@ -55,7 +55,7 @@ public class DBHandle {
 	
 	public void openConnMysql(){
 		String strDirverPath = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://127.0.0.1:3306/datac?characterEncoding=utf-8";
+		String url = "jdbc:mysql://127.0.0.1:3306/typeWeb?characterEncoding=utf-8";
 		try {
 			Class.forName(strDirverPath);
 			conn = DriverManager.getConnection(url,"root","111111");

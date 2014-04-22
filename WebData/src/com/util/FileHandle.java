@@ -3,11 +3,9 @@ package com.util;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -130,7 +128,7 @@ public class FileHandle {
 				return true;
 			}
 		} catch (Exception e) {
-			Log.Error("FileHandle.write 异常:" + e.getMessage());
+			Log.Error("FileHandle.write 异常:" + path + " " + e.getMessage());
 		}
 		return false;
 	}
@@ -271,6 +269,6 @@ public class FileHandle {
 	}
 	
 	public static void main(String[] args) throws IOException{
-		FileHandle.write("D:/test.txt", "颠三倒四");
+		System.out.println(FileHandle.readFile("D:/ts/aa.png"));
 	}
 }

@@ -1,9 +1,14 @@
 package com.util;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -162,7 +167,10 @@ public final class HtmlHandle {
 			url = new URL(curl);
 			q = url.getHost();
 			if(!q.startsWith("http")){
-				q = "http://" + q + ":" + url.getPort();
+				q = "http://" + q;
+			}
+			if(url.getPort() != -1){
+				q = q + ":" + url.getPort();
 			}
 		} catch (MalformedURLException e) {
 			Log.Error(e.getMessage());
@@ -186,11 +194,45 @@ public final class HtmlHandle {
 		return q;
 	}
 	
-	public static void main(String[] args) {
-		String htmlContent = "3.5/sss";
-		Pattern pattern = Pattern.compile("(.+?).(.+?)/");
-		Matcher matcher = pattern.matcher(htmlContent);
-		System.out.println(matcher.find());
+	public static void download(String urlString, String filename,
+			String savePath) {
+		try{
+			// 构造URL
+			URL url = new URL(urlString);
+			// 打开连接
+			URLConnection con = url.openConnection();
+			// 设置请求超时为5s
+			con.setConnectTimeout(15 * 1000);
+			// 输入流
+			InputStream is = con.getInputStream();
+	
+			// 1K的数据缓冲
+			byte[] bs = new byte[1024];
+			// 读取到的数据长度
+			int len;
+			// 输出的文件流
+			File sf = new File(savePath);
+			if (!sf.exists()) {
+				sf.mkdirs();
+			}
+			OutputStream os = new FileOutputStream(sf.getPath() + "\\" + filename);
+			// 开始读取
+			while ((len = is.read(bs)) != -1) {
+				os.write(bs, 0, len);
+			}
+			// 完毕，关闭所有链接
+			os.close();
+			is.close();
+		}catch(Exception e){
+			Log.Error("HtmlHandle.download异常 " + e.getMessage());
+		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		File sf = new File("D:/htmlContent/www.csdb.net/122");
+		if (!sf.exists()) {
+			sf.mkdirs();
+		}
 	}
 	
 

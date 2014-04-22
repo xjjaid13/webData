@@ -1,4 +1,7 @@
-package com.webClawer.grap.analysis.source;
+package com.webCrawl.source;
+
+import java.math.BigInteger;
+import java.util.BitSet;
 
 import com.util.HtmlHandle;
 import com.util.Log;
@@ -29,14 +32,21 @@ public class HtmlSource extends ASource{
 		if(lastIndex >= super.getSourceMark().length()){
 			return System.currentTimeMillis() + "";
 		}else{
-			return super.getSourceMark().substring(lastIndex,super.getSourceMark().length());
+			String lastString = super.getSourceMark().substring(lastIndex,super.getSourceMark().length());
+			int paramIndex = lastString.indexOf("?");
+			if(paramIndex != -1){
+				return lastString.substring(0,paramIndex);
+			}else{
+				return lastString;
+			}
 		}
 	}
 	
 	public static void main(String[] args) {
-		Seed seed = new Seed("http://wxjj.com.cn/datac/weblink/view/4");
-		String str = HtmlHandle.joinUrl("http://wxjj.com.cn", "/datac/weblink/view/4");
-		System.out.println(str);
+		BigInteger bi = new BigInteger("1000000000");
+		System.out.println(bi.doubleValue());
+		BitSet bitSet = new BitSet(bi.bitLength());
+		System.out.println(bitSet.size());
 	}
 	
 }

@@ -1,4 +1,4 @@
-package com.webClawer.grap.analysis.filter;
+package com.webCrawl.filter;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
