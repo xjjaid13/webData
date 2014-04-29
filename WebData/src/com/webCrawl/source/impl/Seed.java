@@ -1,4 +1,4 @@
-package com.webCrawl.source;
+package com.webCrawl.source.impl;
 
 import com.util.HtmlHandle;
 

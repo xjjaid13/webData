@@ -8,7 +8,7 @@ public abstract class ASource implements ISource{
 
 	private String sourceMark;
 	
-	ASource(String sourceMark){
+	public ASource(String sourceMark){
 		this.setSourceMark(sourceMark);
 	}
 

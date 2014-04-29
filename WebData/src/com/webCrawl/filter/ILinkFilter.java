@@ -1,5 +1,7 @@
 package com.webCrawl.filter;
 
+import com.webCrawl.entity.CrawlBug;
+
 /**
  * 过滤url
  * @author Taylor
@@ -7,6 +9,8 @@ package com.webCrawl.filter;
  */
 public interface ILinkFilter {
 
+	void init(CrawlBug crawlBug);
+	
 	boolean filter(String url);
 	
 }

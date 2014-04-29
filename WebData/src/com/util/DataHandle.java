@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,27 @@ import javax.servlet.http.HttpSession;
  * @author cloud
  * */
 public class DataHandle {
+	
+	public static boolean isNullOrEmpty(Object object){
+		if(object == null){
+			return true;
+		}else if(object instanceof Collection){
+			Collection<?> collection = (Collection<?>) object;
+			if(collection != null && collection.size() > 0){
+				return false;
+			}else{
+				return true;
+			}
+		}else if(object instanceof String){
+			String string = (String) object;
+			if("".equals(string) || string.length() == 0){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	/**
 	 * 获取字段长度、全角算一个长度，半角算半个长度
@@ -320,13 +342,6 @@ public class DataHandle {
 	public static int returnUserId(HttpSession session){
 		//String userid = (String) session.getAttribute("userid");
 		return 1;
-	}
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args){
-		
 	}
 	
 }

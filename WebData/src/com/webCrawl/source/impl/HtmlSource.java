@@ -1,10 +1,8 @@
-package com.webCrawl.source;
-
-import java.math.BigInteger;
-import java.util.BitSet;
+package com.webCrawl.source.impl;
 
 import com.util.HtmlHandle;
 import com.util.Log;
+import com.webCrawl.source.ASource;
 
 /**
  * html链接处理
@@ -40,13 +38,6 @@ public class HtmlSource extends ASource{
 				return lastString;
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-		BigInteger bi = new BigInteger("1000000000");
-		System.out.println(bi.doubleValue());
-		BitSet bitSet = new BitSet(bi.bitLength());
-		System.out.println(bitSet.size());
 	}
 	
 }
