@@ -30,12 +30,12 @@ public class StorePage implements IStorePage{
 	@Override
 	public String store(String url) {
 		try{
-			String savePath = crawlBug.getSavePath() + url.replaceAll("http(.*?)//(.+)/(.*)", "$2");
+			String savePath = crawlBug.getSavePath() + url.replaceAll("http(.*?)//(.+)?[:](.*)/(.*)", "$2/$4");
 			HtmlSource source = new HtmlSource(url);
 			String fileName = source.returnHtmlName();
 			HtmlHandle.download(url, source.returnHtmlName(), savePath);
 			crawlLinkService.updateCrawlLinkStatus(crawlBug, url);
-			return fileName;
+			return savePath + "/" + fileName;
 		}catch(Exception e){
 			Log.Error(url + "存储异常,StorePageHtml.store:"+e.getMessage());
 			e.printStackTrace();
@@ -50,5 +50,9 @@ public class StorePage implements IStorePage{
 	public void setCrawlBug(CrawlBug crawlBug) {
 		this.crawlBug = crawlBug;
 	}
-
+	
+	public static void main(String[] args) {
+		System.out.println("http://www.csdn.net:9090/dd".replaceAll("http(.*?)//(.+)?[:](.*)/(.*)", "$2/$4"));
+	}
+	
 }

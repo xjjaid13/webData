@@ -8,6 +8,10 @@ public interface IStoreDB {
 
 	public void init(CrawlBug crawlBug);
 	
-	public String save(List<Object> urlList);
+	public void save(List<Object> urlList);
+	
+	public void save(String url);
+	
+	public String returnLink();
 	
 }

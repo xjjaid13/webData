@@ -25,11 +25,11 @@ public class MainTest1 {
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"conf.xml"});
 		
 		crawlBug = new CrawlBug();
-		crawlBug.setBugId(1);
-		crawlBug.setSavePath("D:/crawl/1/");
-		crawlBug.setSeedUrl("http://www.csdn.net/article/2014-04-09/2819214-Oculus-and-HMD");
-		crawlBug.setDomain("csdn.net");
-		crawlBug.setBugName("bug Num.1");
+		crawlBug.setBugId(2);
+		crawlBug.setSavePath("D:/crawl/"+crawlBug.getBugId()+"/");
+		crawlBug.setSeedUrl("http://localhost:9080/cms/");
+		crawlBug.setDomain("localhost");
+		crawlBug.setBugName("bug Num.2");
 		
 		storeDB = context.getBean("storeDB",IStoreDB.class);
 		storeDB.init(crawlBug);
@@ -38,23 +38,31 @@ public class MainTest1 {
 		
 		IStorePage = context.getBean("storePageHtml",IStorePage.class);
 		IStorePage.init(crawlBug);
+
+		storeDB.save(crawlBug.getSeedUrl());
 		
-		new MainTest1().handle(crawlBug.getSeedUrl());
+		new MainTest1().handle();
 	}
 	
-	public void handle(String newLink) throws InterruptedException{
+	public void handle() throws InterruptedException{
 		
-		String savePath = IStorePage.store(newLink);
+		System.out.println(".............");
+		
+		String newUrl = storeDB.returnLink();
+		
+		if(DataHandle.isNullOrEmpty(newUrl)){
+			return;
+		}
+		
+		String savePath = IStorePage.store(newUrl);
 		
 		List<Object> urlList = commonExtract.extractHtml(savePath);
 		
-		String newUrl = storeDB.save(urlList);
+		System.out.println(urlList.size());
 		
-		System.out.println(newUrl);
+		storeDB.save(urlList);
 		
-		if(!DataHandle.isNullOrEmpty(newUrl)){
-			handle(newUrl);
-		}
+		handle();
 		
 	}
 	

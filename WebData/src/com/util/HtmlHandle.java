@@ -224,7 +224,9 @@ public final class HtmlHandle {
 			os.close();
 			is.close();
 		}catch(Exception e){
-			Log.Error("HtmlHandle.download异常 " + e.getMessage());
+			Log.Error("HtmlHandle.download异常 " + e.getMessage() + ";urlString="+urlString+
+					",filename="+filename+" ,savePath=" + savePath);
+			e.printStackTrace();
 		}
 	}
 	

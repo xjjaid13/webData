@@ -1,5 +1,7 @@
 package com.webCrawl.store.impl;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +38,13 @@ public class StoreDB implements IStoreDB{
 	}
 
 	@Override
-	public String save(List<Object> urlList) {
+	public void save(List<Object> urlList) {
 		if(!DataHandle.isNullOrEmpty(urlList)){
 			for(Object url : urlList){
 				String urlString = url.toString();
 				if(urlString.startsWith("/")){
-					urlString = HtmlHandle.joinUrl(crawlBug.getDomain(), urlString);
-				}
+					urlString = HtmlHandle.joinUrl(crawlBug.getSeedUrl(), urlString);
+				} 
 				if(domainFilter.filter(urlString)){
 					if(!bloomFilterReduceRepeat.exist(urlString)){
 						arrayBlockingQueueWaitList.addList(urlString);
@@ -50,7 +52,26 @@ public class StoreDB implements IStoreDB{
 				}
 			}
 		}
+	}
+	
+	@Override
+	public String returnLink() {
 		return arrayBlockingQueueWaitList.popValue();
+	}
+
+	@Override
+	public void save(String url) {
+		if(!DataHandle.isNullOrEmpty(url)){
+			String urlString = url.toString();
+			if(urlString.startsWith("/")){
+				urlString = HtmlHandle.joinUrl(crawlBug.getSeedUrl(), urlString);
+			}
+			if(domainFilter.filter(urlString)){
+				if(!bloomFilterReduceRepeat.exist(urlString)){
+					arrayBlockingQueueWaitList.addList(urlString);
+				}
+			}
+		}
 	}
 
 	public CrawlBug getCrawlBug() {
@@ -61,4 +82,9 @@ public class StoreDB implements IStoreDB{
 		this.crawlBug = crawlBug;
 	}
 
+	public static void main(String[] args) throws MalformedURLException {
+		URL url = new URL(new URL("http://localhost:8080/cms/ssd.html"), "./js/test.js");
+		System.out.print(url.toExternalForm());
+	}
+	
 }
