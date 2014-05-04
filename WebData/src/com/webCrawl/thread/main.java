@@ -73,7 +73,7 @@ public class main {
 						List<Object> urlList = commonExtract.extractHtml(savePath);
 						
 						storeDB.save(urlList);
-					}
+					} 
 					
 				}
 			});
