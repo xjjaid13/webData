@@ -211,6 +211,10 @@ public final class HtmlHandle {
 			// 读取到的数据长度
 			int len;
 			// 输出的文件流
+			
+			filename = filename.replaceAll("\\?", "-");
+			filename = filename.replaceAll("\\:", "-");
+			
 			File sf = new File(savePath);
 			if (!sf.exists()) {
 				sf.mkdirs();
@@ -226,7 +230,6 @@ public final class HtmlHandle {
 		}catch(Exception e){
 			Log.Error("HtmlHandle.download异常 " + e.getMessage() + ";urlString="+urlString+
 					",filename="+filename+" ,savePath=" + savePath);
-			e.printStackTrace();
 		}
 	}
 	

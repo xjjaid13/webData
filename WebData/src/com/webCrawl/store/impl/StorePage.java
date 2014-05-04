@@ -30,7 +30,7 @@ public class StorePage implements IStorePage{
 	@Override
 	public String store(String url) {
 		try{
-			String savePath = crawlBug.getSavePath() + url.replaceAll("http(.*?)//(.+)?[:](.*)/(.*)", "$2/$4");
+			String savePath = crawlBug.getSavePath() + url.replaceAll("http(.*?)//(.+?)[\\:](.*?)/(.*)", "$2/$4");
 			HtmlSource source = new HtmlSource(url);
 			String fileName = source.returnHtmlName();
 			HtmlHandle.download(url, source.returnHtmlName(), savePath);
@@ -52,7 +52,7 @@ public class StorePage implements IStorePage{
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("http://www.csdn.net:9090/dd".replaceAll("http(.*?)//(.+)?[:](.*)/(.*)", "$2/$4"));
+		System.out.println("http://192.168.199.164:9080/cms/files/1/bluewise/_files/litenav.js".replaceAll("http(.*?)//(.+?)[\\:](.*?)/(.*)", "$2/$4"));
 	}
 	
 }

@@ -48,6 +48,7 @@ public class StoreDB implements IStoreDB{
 				if(domainFilter.filter(urlString)){
 					if(!bloomFilterReduceRepeat.exist(urlString)){
 						arrayBlockingQueueWaitList.addList(urlString);
+						bloomFilterReduceRepeat.add(urlString);
 					}
 				}
 			}

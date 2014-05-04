@@ -15,7 +15,6 @@ import com.webCrawl.linkHandle.IWaitList;
 import com.webCrawl.service.ICrawlLinkService;
 
 @Component("arrayBlockingQueueWaitList")
-@Scope("prototype")
 public class ArrayBlockingQueueWaitList implements IWaitList{
 
 	@Autowired
@@ -45,6 +44,7 @@ public class ArrayBlockingQueueWaitList implements IWaitList{
 	@Override
 	public void addList(String url) {
 		queue.offer(url);
+		crawlLinkService.insertCrawlLink(crawlBug, url);
 	}
 	
 	public CrawlBug getCrawlBug() {

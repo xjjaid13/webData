@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.util.DataHandle;
+import com.util.FileHandle;
 import com.webCrawl.entity.CrawlBug;
 import com.webCrawl.extract.IExtract;
 import com.webCrawl.store.IStoreDB;
@@ -27,8 +28,8 @@ public class MainTest1 {
 		crawlBug = new CrawlBug();
 		crawlBug.setBugId(2);
 		crawlBug.setSavePath("D:/crawl/"+crawlBug.getBugId()+"/");
-		crawlBug.setSeedUrl("http://localhost:9080/cms/");
-		crawlBug.setDomain("localhost");
+		crawlBug.setSeedUrl("http://192.168.199.164:9080/cms/");
+		crawlBug.setDomain("192.168.199.164");
 		crawlBug.setBugName("bug Num.2");
 		
 		storeDB = context.getBean("storeDB",IStoreDB.class);
@@ -41,12 +42,17 @@ public class MainTest1 {
 
 		storeDB.save(crawlBug.getSeedUrl());
 		
+		long s1 = System.currentTimeMillis();
+		
 		new MainTest1().handle();
+		
+		long s2 = System.currentTimeMillis();
+		
+		System.out.println(s2 - s1);
+		
 	}
 	
 	public void handle() throws InterruptedException{
-		
-		System.out.println(".............");
 		
 		String newUrl = storeDB.returnLink();
 		
@@ -58,12 +64,15 @@ public class MainTest1 {
 		
 		List<Object> urlList = commonExtract.extractHtml(savePath);
 		
-		System.out.println(urlList.size());
-		
 		storeDB.save(urlList);
 		
 		handle();
 		
+	}
+	
+	public static void main1(String[] args) {
+		String name = "D:/crawl/test1:a";
+		System.out.println(name.replaceAll("\\:", "-"));
 	}
 	
 }

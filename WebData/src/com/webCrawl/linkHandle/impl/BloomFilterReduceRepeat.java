@@ -16,7 +16,6 @@ import com.webCrawl.linkHandle.IReduceRepeat;
 import com.webCrawl.service.ICrawlLinkService;
 
 @Component("bloomFilterReduceRepeat")
-@Scope("prototype")
 public class BloomFilterReduceRepeat implements IReduceRepeat{
 
 	@Autowired
@@ -42,12 +41,12 @@ public class BloomFilterReduceRepeat implements IReduceRepeat{
 	}
 
 	@Override
-	public boolean exist(String url) {
+	public synchronized boolean exist(String url) {
 		return bf.mightContain(url);
 	}
 
 	@Override
-	public void add(String url) {
+	public synchronized void add(String url) {
 		bf.put(url);
 	}
 
