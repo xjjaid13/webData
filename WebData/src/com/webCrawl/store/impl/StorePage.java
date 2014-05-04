@@ -31,9 +31,13 @@ public class StorePage implements IStorePage{
 	public String store(String url) {
 		try{
 			String savePath = crawlBug.getSavePath() + url.replaceAll("http(.*?)//(.+?)[\\:](.*?)/(.*)", "$2/$4");
+			if(!savePath.endsWith("/")){
+				int lastIndex = savePath.lastIndexOf("/");
+				savePath = savePath.substring(0,lastIndex);
+			}
 			HtmlSource source = new HtmlSource(url);
 			String fileName = source.returnHtmlName();
-			HtmlHandle.download(url, source.returnHtmlName(), savePath);
+			HtmlHandle.download(url, fileName , savePath);
 			crawlLinkService.updateCrawlLinkStatus(crawlBug, url);
 			return savePath + "/" + fileName;
 		}catch(Exception e){

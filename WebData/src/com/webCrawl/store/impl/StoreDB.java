@@ -44,13 +44,16 @@ public class StoreDB implements IStoreDB{
 				String urlString = url.toString();
 				if(urlString.startsWith("/")){
 					urlString = HtmlHandle.joinUrl(crawlBug.getSeedUrl(), urlString);
-				} 
+				}
 				if(domainFilter.filter(urlString)){
-					if(!bloomFilterReduceRepeat.exist(urlString)){
-						arrayBlockingQueueWaitList.addList(urlString);
-						bloomFilterReduceRepeat.add(urlString);
+					synchronized(this){
+						if(!bloomFilterReduceRepeat.exist(urlString)){
+							arrayBlockingQueueWaitList.addList(urlString);
+							bloomFilterReduceRepeat.add(urlString);
+						}
 					}
 				}
+				
 			}
 		}
 	}

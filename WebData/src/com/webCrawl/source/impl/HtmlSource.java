@@ -31,12 +31,9 @@ public class HtmlSource extends ASource{
 			return System.currentTimeMillis() + "";
 		}else{
 			String lastString = super.getSourceMark().substring(lastIndex,super.getSourceMark().length());
-			int paramIndex = lastString.indexOf("?");
-			if(paramIndex != -1){
-				return lastString.substring(0,paramIndex);
-			}else{
-				return lastString;
-			}
+			lastString = lastString.replaceAll("\\?", "-");
+			lastString = lastString.replaceAll("\\:", "-");
+			return lastString;
 		}
 	}
 	

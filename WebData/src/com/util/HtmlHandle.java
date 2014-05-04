@@ -212,9 +212,6 @@ public final class HtmlHandle {
 			int len;
 			// 输出的文件流
 			
-			filename = filename.replaceAll("\\?", "-");
-			filename = filename.replaceAll("\\:", "-");
-			
 			File sf = new File(savePath);
 			if (!sf.exists()) {
 				sf.mkdirs();

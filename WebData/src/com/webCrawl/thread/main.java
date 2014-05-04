@@ -45,17 +45,28 @@ public class main {
 
 		storeDB.save(crawlBug.getSeedUrl());
 		
+		long s1 = System.currentTimeMillis();
+		
 		ExecutorService cachedThreadPool = Executors.newCachedThreadPool();  
 		
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 10; i++) {
 			cachedThreadPool.execute(new Runnable() {
 				public void run() {
+					boolean flag = false;
 					while(true){
 						String newUrl = storeDB.returnLink();
 						
-//						if(DataHandle.isNullOrEmpty(newUrl)){
-//							break;
-//						}
+						if(DataHandle.isNullOrEmpty(newUrl) && flag){
+							break;
+						}else if(DataHandle.isNullOrEmpty(newUrl)){
+							flag = true;
+							try {
+								Thread.sleep(5000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							continue;
+						}
 						
 						String savePath = IStorePage.store(newUrl);
 						
@@ -67,6 +78,10 @@ public class main {
 				}
 			});
 		}
+		
+		long s2 = System.currentTimeMillis();
+		
+		System.out.println(s2 - s1);
 		
 	}
 	
