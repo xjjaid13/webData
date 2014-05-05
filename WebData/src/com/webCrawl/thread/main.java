@@ -81,7 +81,6 @@ public class main {
 		
 		long s2 = System.currentTimeMillis();
 		
-		
 		System.out.println(s2 - s1);
 		
 	}
