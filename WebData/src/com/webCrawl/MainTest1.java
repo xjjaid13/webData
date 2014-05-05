@@ -13,7 +13,7 @@ import com.webCrawl.store.IStoreDB;
 import com.webCrawl.store.IStorePage;
 
 /**
-*1111111111
+*1111111111222222222222222222
 */
 public class MainTest1 {
 	
