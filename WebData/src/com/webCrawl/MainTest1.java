@@ -12,6 +12,9 @@ import com.webCrawl.extract.IExtract;
 import com.webCrawl.store.IStoreDB;
 import com.webCrawl.store.IStorePage;
 
+/**
+*1111111111
+*/
 public class MainTest1 {
 	
 	static CrawlBug crawlBug;
