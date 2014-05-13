@@ -31,8 +31,8 @@ public class MainTest1 {
 		crawlBug = new CrawlBug();
 		crawlBug.setBugId(2);
 		crawlBug.setSavePath("D:/crawl/"+crawlBug.getBugId()+"/");
-		crawlBug.setSeedUrl("http://192.168.199.164:9080/cms/");
-		crawlBug.setDomain("192.168.199.164");
+		crawlBug.setSeedUrl("http://localhost:9080/cms/info/81.jspx");
+		crawlBug.setDomain("localhost");
 		crawlBug.setBugName("bug Num.2");
 		
 		storeDB = context.getBean("storeDB",IStoreDB.class);

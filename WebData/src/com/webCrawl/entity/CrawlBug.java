@@ -1,5 +1,9 @@
 package com.webCrawl.entity;
 
+import java.util.Set;
+
+import com.webCrawl.filter.ILinkFilter;
+
 public class CrawlBug {
 
 	private int bugId;
@@ -13,6 +17,8 @@ public class CrawlBug {
 	private String domain;
 	
 	private String regex;
+	
+	private Set<ILinkFilter> iLinkFilterSet;
 
 	public int getBugId() {
 		return bugId;
@@ -60,6 +66,14 @@ public class CrawlBug {
 
 	public void setRegex(String regex) {
 		this.regex = regex;
+	}
+
+	public Set<ILinkFilter> getiLinkFilterSet() {
+		return iLinkFilterSet;
+	}
+
+	public void setiLinkFilterSet(Set<ILinkFilter> iLinkFilterSet) {
+		this.iLinkFilterSet = iLinkFilterSet;
 	}
 	
 }
