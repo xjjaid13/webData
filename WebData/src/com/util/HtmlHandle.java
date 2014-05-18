@@ -12,6 +12,11 @@ import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+
+import com.webCrawl.entity.CrawlLink;
+
 /**
  * html字符串处理类
  * 
@@ -192,6 +197,22 @@ public final class HtmlHandle {
 		if (q.indexOf("#") != -1)
 			q = q.replaceAll("^(.+?)#.*?$", "$1");
 		return q;
+	}
+	
+	public static CrawlLink parseUrlToCrawlLink(CrawlLink crawlLink){
+		try{
+			HttpClient httpclient = new HttpClient();
+			GetMethod getMethod=new GetMethod(crawlLink.getLink());
+			int statusCode = httpclient.executeMethod(getMethod);
+			crawlLink.setStatusCode(statusCode);
+			crawlLink.setLinkContent(getMethod.getResponseBodyAsString());
+			crawlLink.setContentType(getMethod.getResponseHeader("Content-Type").getValue());
+		    getMethod.releaseConnection();
+		}catch(Exception e){
+			Log.Error("HtmlHandle.parseUrlToCrawlLink error: " + crawlLink.getLink() + e.getMessage());
+			crawlLink.setStatusCode(-1);
+		}
+		return crawlLink;
 	}
 	
 	public static void download(String urlString, String filename,
