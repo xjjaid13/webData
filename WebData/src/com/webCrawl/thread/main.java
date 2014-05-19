@@ -31,17 +31,17 @@ public class main {
 		crawlBug = new CrawlBug();
 		crawlBug.setBugId(2);
 		crawlBug.setSavePath("D:/crawl2/"+crawlBug.getBugId()+"/");
-		crawlBug.setSeedUrl("http://192.168.199.164:9080/cms/");
-		crawlBug.setDomain("192.168.199.164");
+		crawlBug.setSeedUrl("http://localhost:9080/cms/");
+		crawlBug.setDomain("localhost");
 		crawlBug.setBugName("bug Num.2");
 		
 		storeDB = context.getBean("storeDB",IStoreDB.class);
-		storeDB.init(crawlBug);
+		storeDB.setCrawlBug(crawlBug);
 		
 		commonExtract = context.getBean("commonExtract",IExtract.class);
 		
 		IStorePage = context.getBean("storePageHtml",IStorePage.class);
-		IStorePage.init(crawlBug);
+		IStorePage.setCrawlBug(crawlBug);
 
 		storeDB.save(crawlBug.getSeedUrl());
 		

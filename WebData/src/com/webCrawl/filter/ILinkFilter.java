@@ -1,16 +1,14 @@
 package com.webCrawl.filter;
 
-import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ICrawlBug;
 
 /**
  * 过滤url
  * @author Taylor
  *
  */
-public interface ILinkFilter {
+public interface ILinkFilter extends ICrawlBug{
 
-	void init(CrawlBug crawlBug);
-	
 	boolean filter(String url);
 	
 }

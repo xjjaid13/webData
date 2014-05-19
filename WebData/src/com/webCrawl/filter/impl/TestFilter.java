@@ -10,6 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ECrawlBug;
 import com.webCrawl.extract.IExtract;
 import com.webCrawl.filter.ILinkFilter;
 import com.webCrawl.thread.main;
@@ -19,14 +20,7 @@ import com.webCrawl.thread.main;
  *
  */
 @Component("testFilter")
-public class TestFilter implements ILinkFilter{
-
-	private CrawlBug crawlBug;
-	
-	@Override
-	public void init(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
-	}
+public class TestFilter extends ECrawlBug implements ILinkFilter{
 	
 	@Override
 	public boolean filter(String url) {
@@ -37,14 +31,6 @@ public class TestFilter implements ILinkFilter{
 		}
 	}
 	
-	public CrawlBug getCrawlBug() {
-		return crawlBug;
-	}
-
-	public void setCrawlBug(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
-	}
-
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"conf.xml"});
 		CrawlBug crawlBug = new CrawlBug();
@@ -55,9 +41,9 @@ public class TestFilter implements ILinkFilter{
 		crawlBug.setBugName("bug Num.2");
 		
 		ILinkFilter domainFilter = context.getBean("domainFilter",ILinkFilter.class);
-		domainFilter.init(crawlBug);
+		domainFilter.setCrawlBug(crawlBug);
 		ILinkFilter testFilter = context.getBean("testFilter",ILinkFilter.class);
-		domainFilter.init(crawlBug);
+		testFilter.setCrawlBug(crawlBug);
 		Set<ILinkFilter> iLinkFilterSet = new HashSet<ILinkFilter>();
 		iLinkFilterSet.add(domainFilter);
 		iLinkFilterSet.add(testFilter);

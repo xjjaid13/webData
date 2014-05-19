@@ -5,27 +5,25 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.util.DataHandle;
 import com.webCrawl.entity.CrawlBug;
 import com.webCrawl.entity.CrawlLink;
+import com.webCrawl.entity.ECrawlBug;
 import com.webCrawl.linkHandle.IWaitList;
 import com.webCrawl.service.ICrawlLinkService;
 
 @Component("arrayBlockingQueueWaitList")
-public class ArrayBlockingQueueWaitList implements IWaitList{
+public class ArrayBlockingQueueWaitList extends ECrawlBug implements IWaitList{
 
 	@Autowired
 	ICrawlLinkService crawlLinkService;
 	
 	Queue<String> queue = null;
 	
-	private CrawlBug crawlBug;
-	
 	@Override
-	public void init(CrawlBug crawlBug) {
+	public void setCrawlBug(CrawlBug crawlBug) {
 		this.crawlBug = crawlBug;
 		queue = new ArrayBlockingQueue<String>(100000000,true);
 		List<CrawlLink> crawlLinkList = crawlLinkService.queryWaitListLink(crawlBug);
@@ -47,12 +45,5 @@ public class ArrayBlockingQueueWaitList implements IWaitList{
 		crawlLinkService.insertCrawlLink(crawlBug, url);
 	}
 	
-	public CrawlBug getCrawlBug() {
-		return crawlBug;
-	}
-
-	public void setCrawlBug(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
-	}
 
 }

@@ -10,20 +10,12 @@ import org.springframework.stereotype.Component;
 
 import com.util.FileHandle;
 import com.util.Log;
-import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ECrawlBug;
 import com.webCrawl.extract.IExtract;
 
 @Component("commonExtract")
-public class CommonExtract implements IExtract{
+public class CommonExtract extends ECrawlBug implements IExtract{
 
-	private CrawlBug crawlBug;
-	
-	@Override
-	public void init(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
-	}
-	
-	@Override
 	public List<Object> extractHtml(String path) {
 		try{
 			List<Object> list = new ArrayList<Object>();
@@ -43,14 +35,6 @@ public class CommonExtract implements IExtract{
 			Log.Error("CommonExtract.extractHtml : " + e.getMessage());
 		}
 		return null;
-	}
-
-	public CrawlBug getCrawlBug() {
-		return crawlBug;
-	}
-
-	public void setCrawlBug(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
 	}
 
 }

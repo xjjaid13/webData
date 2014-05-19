@@ -205,7 +205,9 @@ public final class HtmlHandle {
 			GetMethod getMethod=new GetMethod(crawlLink.getLink());
 			int statusCode = httpclient.executeMethod(getMethod);
 			crawlLink.setStatusCode(statusCode);
-			crawlLink.setLinkContent(getMethod.getResponseBodyAsString());
+			if(statusCode == 200){
+				crawlLink.setLinkContent(getMethod.getResponseBodyAsString());
+			}
 			crawlLink.setContentType(getMethod.getResponseHeader("Content-Type").getValue());
 		    getMethod.releaseConnection();
 		}catch(Exception e){

@@ -2,17 +2,15 @@ package com.webCrawl.extract;
 
 import java.util.List;
 
-import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ICrawlBug;
 
 /**
  * 解析html
  * @author Taylor
  *
  */
-public interface IExtract {
+public interface IExtract extends ICrawlBug{
 
-	void init(CrawlBug crawlBug);
-	
 	public List<Object> extractHtml(String path);
 	
 }

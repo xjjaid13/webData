@@ -1,11 +1,9 @@
 package com.webCrawl.nofilter;
 
-import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ICrawlBug;
 
-public interface INoFilter {
+public interface INoFilter extends ICrawlBug{
 
-	void init(CrawlBug crawlBug);
-	
 	boolean noFilter(String url);
 	
 }

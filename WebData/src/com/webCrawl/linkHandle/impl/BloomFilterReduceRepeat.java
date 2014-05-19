@@ -12,16 +12,15 @@ import com.google.common.hash.Funnels;
 import com.util.DataHandle;
 import com.webCrawl.entity.CrawlBug;
 import com.webCrawl.entity.CrawlLink;
+import com.webCrawl.entity.ECrawlBug;
 import com.webCrawl.linkHandle.IReduceRepeat;
 import com.webCrawl.service.ICrawlLinkService;
 
 @Component("bloomFilterReduceRepeat")
-public class BloomFilterReduceRepeat implements IReduceRepeat{
+public class BloomFilterReduceRepeat extends ECrawlBug implements IReduceRepeat{
 
 	@Autowired
 	ICrawlLinkService crawlLinkService;
-	
-	private CrawlBug crawlBug;
 	
 	BloomFilter<CharSequence> bf;
 	
@@ -30,7 +29,7 @@ public class BloomFilterReduceRepeat implements IReduceRepeat{
 	}
 	
 	@Override
-	public void init(CrawlBug crawlBug) {
+	public void setCrawlBug(CrawlBug crawlBug) {
 		this.crawlBug = crawlBug;
 		List<CrawlLink> crawlLinkList = crawlLinkService.queryAllLink(crawlBug);
 		if(!DataHandle.isNullOrEmpty(crawlLinkList)){
@@ -50,12 +49,4 @@ public class BloomFilterReduceRepeat implements IReduceRepeat{
 		bf.put(url);
 	}
 
-	public CrawlBug getCrawlBug() {
-		return crawlBug;
-	}
-
-	public void setCrawlBug(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
-	}
-	
 }

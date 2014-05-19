@@ -2,12 +2,10 @@ package com.webCrawl.store;
 
 import java.util.List;
 
-import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ICrawlBug;
 
-public interface IStoreDB {
+public interface IStoreDB extends ICrawlBug{
 
-	public void init(CrawlBug crawlBug);
-	
 	public void save(List<Object> urlList);
 	
 	public void save(String url);

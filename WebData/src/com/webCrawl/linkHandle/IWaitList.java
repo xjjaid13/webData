@@ -1,11 +1,9 @@
 package com.webCrawl.linkHandle;
 
-import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ICrawlBug;
 
-public interface IWaitList {
+public interface IWaitList extends ICrawlBug{
 
-	public void init(CrawlBug crawlBug);
-	
 	public String popValue();
 	
 	public void addList(String url);

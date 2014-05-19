@@ -110,23 +110,18 @@ public class FileHandle {
 	public static boolean write(String path, String content) {
 		OutputStreamWriter osw = null;
 		try {
-			File f = new File(path);
-			if (f.exists()) {
-				Log.Error("文件" + path + "存在");
-				return false;
-			} else {
-				boolean isSuccess = f.createNewFile();
-				if (!isSuccess) {
-					Log.Error("文件" + path + "创建失败");
-					return false;
-				}
-				FileOutputStream fos = new FileOutputStream(path);
-				osw = new OutputStreamWriter(fos, "UTF-8");
-				osw.write(content);
-				osw.flush();
-				osw.close();
-				return true;
+			int lastIndex = path.lastIndexOf("/");
+			String pathName = path.substring(0,lastIndex);
+			File f = new File(pathName);
+			if (!f.exists()) {
+				new File(pathName).mkdirs();
 			}
+			FileOutputStream fos = new FileOutputStream(path);
+			osw = new OutputStreamWriter(fos, "UTF-8");
+			osw.write(content);
+			osw.flush();
+			osw.close();
+			return true;
 		} catch (Exception e) {
 			Log.Error("FileHandle.write 异常:" + path + " " + e.getMessage());
 		}
@@ -268,7 +263,4 @@ public class FileHandle {
 		return b;
 	}
 	
-	public static void main(String[] args) throws IOException{
-		System.out.println(FileHandle.readFile("D:/ts/aa.png"));
-	}
 }

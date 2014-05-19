@@ -3,9 +3,12 @@ package com.webCrawl.store.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.util.FileHandle;
 import com.util.HtmlHandle;
 import com.util.Log;
 import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.CrawlLink;
+import com.webCrawl.entity.ECrawlLink;
 import com.webCrawl.service.ICrawlLinkService;
 import com.webCrawl.source.impl.HtmlSource;
 import com.webCrawl.store.IStorePage;
@@ -15,7 +18,7 @@ import com.webCrawl.store.IStorePage;
  *
  */
 @Component("storePageHtml")
-public class StorePage implements IStorePage{
+public class StorePage extends ECrawlLink implements IStorePage{
 
 	private CrawlBug crawlBug;
 	
@@ -23,7 +26,7 @@ public class StorePage implements IStorePage{
 	ICrawlLinkService crawlLinkService;
 	
 	@Override
-	public void init(CrawlBug crawlBug) {
+	public void setCrawlBug(CrawlBug crawlBug) {
 		this.crawlBug = crawlBug;
 	}
 	
@@ -37,22 +40,24 @@ public class StorePage implements IStorePage{
 			}
 			HtmlSource source = new HtmlSource(url);
 			String fileName = source.returnHtmlName();
-			HtmlHandle.download(url, fileName , savePath);
+			
+			CrawlLink crawlLink = new CrawlLink();
+			crawlLink.setLink(url);
+			crawlLink = HtmlHandle.parseUrlToCrawlLink(crawlLink);
+			
+			String filePath = savePath + "/" + fileName;
+			
+			if(crawlLink.getStatusCode() == 200){
+				FileHandle.write(filePath, crawlLink.getLinkContent());
+			}
+			//HtmlHandle.download(url, fileName , savePath);
 			crawlLinkService.updateCrawlLinkStatus(crawlBug, url);
-			return savePath + "/" + fileName;
+			return filePath;
 		}catch(Exception e){
 			Log.Error(url + "存储异常,StorePageHtml.store:"+e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	public CrawlBug getCrawlBug() {
-		return crawlBug;
-	}
-
-	public void setCrawlBug(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
 	}
 	
 	public static void main(String[] args) {

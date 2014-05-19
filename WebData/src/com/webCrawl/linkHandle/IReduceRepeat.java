@@ -1,10 +1,8 @@
 package com.webCrawl.linkHandle;
 
-import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ICrawlBug;
 
-public interface IReduceRepeat {
-	
-	public void init(CrawlBug crawlBug);
+public interface IReduceRepeat extends ICrawlBug{
 	
 	public boolean exist(String url);
 	

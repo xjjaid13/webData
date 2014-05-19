@@ -17,15 +17,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ECrawlBug;
 import com.webCrawl.nofilter.INoFilter;
 import com.webCrawl.thread.main;
 
-public class PicNoFilter implements INoFilter{
+public class PicNoFilter extends ECrawlBug implements INoFilter{
 
-	private CrawlBug crawlBug;
-	
 	@Override
-	public void init(CrawlBug crawlBug) {
+	public void setCrawlBug(CrawlBug crawlBug) {
 		this.setCrawlBug(crawlBug);
 	}
 
@@ -41,14 +40,6 @@ public class PicNoFilter implements INoFilter{
 			}
 		}
 		return false;
-	}
-	
-	public CrawlBug getCrawlBug() {
-		return crawlBug;
-	}
-
-	public void setCrawlBug(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
 	}
 	
 	public static void main(String[] args) throws IOException {

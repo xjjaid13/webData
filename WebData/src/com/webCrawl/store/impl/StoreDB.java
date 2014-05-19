@@ -10,13 +10,14 @@ import org.springframework.stereotype.Component;
 import com.util.DataHandle;
 import com.util.HtmlHandle;
 import com.webCrawl.entity.CrawlBug;
+import com.webCrawl.entity.ECrawlBug;
 import com.webCrawl.filter.ILinkFilter;
 import com.webCrawl.linkHandle.IReduceRepeat;
 import com.webCrawl.linkHandle.IWaitList;
 import com.webCrawl.store.IStoreDB;
 
 @Component("storeDB")
-public class StoreDB implements IStoreDB{
+public class StoreDB extends ECrawlBug implements IStoreDB{
 
 	@Autowired
 	IReduceRepeat bloomFilterReduceRepeat;
@@ -27,14 +28,12 @@ public class StoreDB implements IStoreDB{
 	@Autowired
 	ILinkFilter domainFilter;
 	
-	private CrawlBug crawlBug;
-	
 	@Override
-	public void init(CrawlBug crawlBug) {
+	public void setCrawlBug(CrawlBug crawlBug) {
 		this.crawlBug = crawlBug;
-		bloomFilterReduceRepeat.init(crawlBug);
-		arrayBlockingQueueWaitList.init(crawlBug);
-		domainFilter.init(crawlBug);
+		bloomFilterReduceRepeat.setCrawlBug(crawlBug);
+		arrayBlockingQueueWaitList.setCrawlBug(crawlBug);
+		domainFilter.setCrawlBug(crawlBug);
 	}
 
 	@Override
@@ -76,14 +75,6 @@ public class StoreDB implements IStoreDB{
 				}
 			}
 		}
-	}
-
-	public CrawlBug getCrawlBug() {
-		return crawlBug;
-	}
-
-	public void setCrawlBug(CrawlBug crawlBug) {
-		this.crawlBug = crawlBug;
 	}
 
 	public static void main(String[] args) throws MalformedURLException {
