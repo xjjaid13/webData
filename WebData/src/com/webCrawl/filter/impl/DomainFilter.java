@@ -2,8 +2,7 @@ package com.webCrawl.filter.impl;
 
 import org.springframework.stereotype.Component;
 
-import com.webCrawl.entity.CrawlBug;
-import com.webCrawl.entity.ECrawlBug;
+import com.webCrawl.entity.ECrawlLink;
 import com.webCrawl.filter.ILinkFilter;
 
 /**
@@ -11,7 +10,7 @@ import com.webCrawl.filter.ILinkFilter;
  *
  */
 @Component("domainFilter")
-public class DomainFilter extends ECrawlBug implements ILinkFilter{
+public class DomainFilter extends ECrawlLink implements ILinkFilter{
 	
 	public boolean filter(String url) {
 		if(url.indexOf(crawlBug.getDomain()) != -1){

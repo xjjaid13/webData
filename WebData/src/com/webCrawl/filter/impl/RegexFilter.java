@@ -5,12 +5,11 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
-import com.webCrawl.entity.CrawlBug;
-import com.webCrawl.entity.ECrawlBug;
+import com.webCrawl.entity.ECrawlLink;
 import com.webCrawl.filter.ILinkFilter;
 
 @Component("regexFilter")
-public class RegexFilter extends ECrawlBug implements ILinkFilter{
+public class RegexFilter extends ECrawlLink implements ILinkFilter{
 	
 	@Override
 	public boolean filter(String url) {

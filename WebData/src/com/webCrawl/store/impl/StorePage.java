@@ -3,7 +3,6 @@ package com.webCrawl.store.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.util.FileHandle;
 import com.util.HtmlHandle;
 import com.util.Log;
 import com.webCrawl.entity.CrawlBug;
@@ -33,7 +32,7 @@ public class StorePage extends ECrawlLink implements IStorePage{
 	@Override
 	public String store(String url) {
 		try{
-			String savePath = crawlBug.getSavePath() + url.replaceAll("http(.*?)//(.+?)[\\:](.*?)/(.*)", "$2/$4");
+			String savePath = crawlBug.getSavePath() + url.replaceAll("http(.*?)//(.+?)/(.*)", "$2/$3").replace(":", "-");
 			if(!savePath.endsWith("/")){
 				int lastIndex = savePath.lastIndexOf("/");
 				savePath = savePath.substring(0,lastIndex);
@@ -48,20 +47,19 @@ public class StorePage extends ECrawlLink implements IStorePage{
 			String filePath = savePath + "/" + fileName;
 			
 			if(crawlLink.getStatusCode() == 200){
-				FileHandle.write(filePath, crawlLink.getLinkContent());
+				HtmlHandle.download(url, fileName , savePath);
 			}
-			//HtmlHandle.download(url, fileName , savePath);
 			crawlLinkService.updateCrawlLinkStatus(crawlBug, url);
 			return filePath;
 		}catch(Exception e){
-			Log.Error(url + "存储异常,StorePageHtml.store:"+e.getMessage());
+			Log.Error(url + "存储异常,StorePageHtml.store:" + url + ",exception:" + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("http://192.168.199.164:9080/cms/files/1/bluewise/_files/litenav.js".replaceAll("http(.*?)//(.+?)[\\:](.*?)/(.*)", "$2/$4"));
+		System.out.println("http://demo.jspxcms.com:8080/uploads/1/image/public/201303/20130319013832_fclut6.jpg".replaceAll("http(.*?)//(.+?)/(.*)", "$2/$3").replace(":", "-"));
 	}
 	
 }

@@ -10,21 +10,19 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.webCrawl.entity.CrawlBug;
-import com.webCrawl.entity.ECrawlBug;
-import com.webCrawl.extract.IExtract;
+import com.webCrawl.entity.ECrawlLink;
 import com.webCrawl.filter.ILinkFilter;
-import com.webCrawl.thread.main;
 
 /**
  * @author Taylor
  *
  */
 @Component("testFilter")
-public class TestFilter extends ECrawlBug implements ILinkFilter{
+public class TestFilter extends ECrawlLink implements ILinkFilter{
 	
 	@Override
 	public boolean filter(String url) {
-		if(url.endsWith(".java")){
+		if(crawlLink.getContentType().indexOf("image") == -1){
 			return true;
 		}else{
 			return false;

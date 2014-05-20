@@ -6,7 +6,7 @@ import com.webCrawl.entity.ICrawlBug;
 
 public interface IStoreDB extends ICrawlBug{
 
-	public void save(List<Object> urlList);
+	public void save(List<String> urlList);
 	
 	public void save(String url);
 	

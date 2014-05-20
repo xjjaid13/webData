@@ -11,6 +11,6 @@ import com.webCrawl.entity.ICrawlBug;
  */
 public interface IExtract extends ICrawlBug{
 
-	public List<Object> extractHtml(String path);
+	public List<String> extractHtml(String path);
 	
 }

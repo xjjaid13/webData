@@ -3,16 +3,15 @@ package com.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 
 import com.webCrawl.entity.CrawlLink;
@@ -202,55 +201,33 @@ public final class HtmlHandle {
 	public static CrawlLink parseUrlToCrawlLink(CrawlLink crawlLink){
 		try{
 			HttpClient httpclient = new HttpClient();
-			GetMethod getMethod=new GetMethod(crawlLink.getLink());
+			GetMethod getMethod = new GetMethod(crawlLink.getLink());
 			int statusCode = httpclient.executeMethod(getMethod);
 			crawlLink.setStatusCode(statusCode);
-			if(statusCode == 200){
-				crawlLink.setLinkContent(getMethod.getResponseBodyAsString());
-			}
 			crawlLink.setContentType(getMethod.getResponseHeader("Content-Type").getValue());
 		    getMethod.releaseConnection();
 		}catch(Exception e){
-			Log.Error("HtmlHandle.parseUrlToCrawlLink error: " + crawlLink.getLink() + e.getMessage());
+			Log.Error("HtmlHandle.parseUrlToCrawlLink error: " + crawlLink.getLink() + " " + e.getMessage());
 			crawlLink.setStatusCode(-1);
+			e.printStackTrace();
 		}
 		return crawlLink;
 	}
 	
 	public static void download(String urlString, String filename,
-			String savePath) {
-		try{
-			// 构造URL
-			URL url = new URL(urlString);
-			// 打开连接
-			URLConnection con = url.openConnection();
-			// 设置请求超时为5s
-			con.setConnectTimeout(15 * 1000);
-			// 输入流
-			InputStream is = con.getInputStream();
-	
-			// 1K的数据缓冲
-			byte[] bs = new byte[1024];
-			// 读取到的数据长度
-			int len;
-			// 输出的文件流
-			
-			File sf = new File(savePath);
-			if (!sf.exists()) {
-				sf.mkdirs();
-			}
-			OutputStream os = new FileOutputStream(sf.getPath() + "\\" + filename);
-			// 开始读取
-			while ((len = is.read(bs)) != -1) {
-				os.write(bs, 0, len);
-			}
-			// 完毕，关闭所有链接
-			os.close();
-			is.close();
-		}catch(Exception e){
-			Log.Error("HtmlHandle.download异常 " + e.getMessage() + ";urlString="+urlString+
-					",filename="+filename+" ,savePath=" + savePath);
+			String savePath) throws Exception {
+		File savePathFile = new File(savePath);
+		if(!savePathFile.exists()){
+			savePathFile.mkdirs();
 		}
+		HttpClient client = new HttpClient();  
+        GetMethod get = new GetMethod(urlString);  
+        client.executeMethod(get);  
+        File storeFile = new File(savePath + "/" + filename);  
+        FileOutputStream output = new FileOutputStream(storeFile);  
+        //得到网络资源的字节数组,并写入文件  
+        output.write(get.getResponseBody());  
+        output.close();  
 	}
 	
 	public static void main(String[] args) throws Exception {

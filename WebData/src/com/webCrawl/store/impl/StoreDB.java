@@ -37,19 +37,13 @@ public class StoreDB extends ECrawlBug implements IStoreDB{
 	}
 
 	@Override
-	public void save(List<Object> urlList) {
+	public void save(List<String> urlList) {
 		if(!DataHandle.isNullOrEmpty(urlList)){
-			for(Object url : urlList){
-				String urlString = url.toString();
-				if(urlString.startsWith("/")){
-					urlString = HtmlHandle.joinUrl(crawlBug.getSeedUrl(), urlString);
-				}
-				if(domainFilter.filter(urlString)){
-					synchronized(this){
-						if(!bloomFilterReduceRepeat.exist(urlString)){
-							arrayBlockingQueueWaitList.addList(urlString);
-							bloomFilterReduceRepeat.add(urlString);
-						}
+			for(String url : urlList){
+				synchronized(this){
+					if(!bloomFilterReduceRepeat.exist(url)){
+						arrayBlockingQueueWaitList.addList(url);
+						bloomFilterReduceRepeat.add(url);
 					}
 				}
 				
