@@ -1,6 +1,6 @@
 package com.webCrawl.extract;
 
-import java.util.List;
+import java.util.Set;
 
 import com.webCrawl.entity.ICrawlBug;
 
@@ -11,6 +11,6 @@ import com.webCrawl.entity.ICrawlBug;
  */
 public interface IExtract extends ICrawlBug{
 
-	public List<String> extractHtml(String path);
+	public Set<String> extractHtml(String path);
 	
 }

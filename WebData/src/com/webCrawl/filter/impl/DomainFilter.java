@@ -19,10 +19,5 @@ public class DomainFilter extends ECrawlLink implements ILinkFilter{
 			return false;
 		}
 	}
-	
-	public static void main(String[] args) {
-		String url = "http://wxjj.com.cn/datac/weblink/view/4";
-		System.out.println(url.replaceAll("(.+?)/(.+?).(.+?)/(.+)/(.+)", "$4"));
-	}
 
 }

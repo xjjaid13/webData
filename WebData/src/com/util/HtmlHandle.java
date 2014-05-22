@@ -3,16 +3,22 @@ package com.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpEntity;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import com.webCrawl.entity.CrawlLink;
 
@@ -23,6 +29,8 @@ import com.webCrawl.entity.CrawlLink;
  * */
 public final class HtmlHandle {
 
+	static CloseableHttpClient httpclient = HttpClients.createDefault();
+	
 	/** 转义尖括号等为字符 */
 	public static String filter(String htmlContent) {
 		if (htmlContent == null) {
@@ -184,6 +192,9 @@ public final class HtmlHandle {
 	}
 	
 	public static String joinUrl(String curl, String file) {
+		if(file.startsWith("http")){
+			return file;
+		}
 		URL url = null;
 		String q = "";
 		try {
@@ -193,48 +204,69 @@ public final class HtmlHandle {
 			Log.Error(e.getMessage());
 		}
 		url = null;
-		if (q.indexOf("#") != -1)
+		if (q.indexOf("#") != -1){
 			q = q.replaceAll("^(.+?)#.*?$", "$1");
+		}
 		return q;
 	}
 	
-	public static CrawlLink parseUrlToCrawlLink(CrawlLink crawlLink){
-		try{
-			HttpClient httpclient = new HttpClient();
-			GetMethod getMethod = new GetMethod(crawlLink.getLink());
-			int statusCode = httpclient.executeMethod(getMethod);
-			crawlLink.setStatusCode(statusCode);
-			crawlLink.setContentType(getMethod.getResponseHeader("Content-Type").getValue());
-		    getMethod.releaseConnection();
-		}catch(Exception e){
-			Log.Error("HtmlHandle.parseUrlToCrawlLink error: " + crawlLink.getLink() + " " + e.getMessage());
-			crawlLink.setStatusCode(-1);
-			e.printStackTrace();
+	public static CrawlLink parseUrlToCrawlLink(CrawlLink crawlLink) throws Exception{
+		CloseableHttpResponse response = null;
+		HttpGet httpget = null;
+		try {
+			HttpClientContext context = HttpClientContext.create();
+			httpget = new HttpGet(crawlLink.getLink());
+			response = httpclient.execute(httpget,context);
+			StatusLine statusLine = response.getStatusLine();
+			crawlLink.setStatusCode(statusLine.getStatusCode());
+			ContentType contentType = ContentType.getOrDefault(response.getEntity());
+			crawlLink.setContentType(contentType.getMimeType());
+			return crawlLink;
+		} catch(Exception e){
+			Log.Error(e);
+			throw e;
+		} finally {
+			response.close();
 		}
-		return crawlLink;
 	}
 	
-	public static void download(String urlString, String filename,
+	public static CrawlLink download(String urlString, String filename,
 			String savePath) throws Exception {
-		File savePathFile = new File(savePath);
-		if(!savePathFile.exists()){
-			savePathFile.mkdirs();
+		CloseableHttpResponse response = null;
+		OutputStream output = null;
+		HttpGet httpget = null;
+		try {
+			CrawlLink crawlLink = new CrawlLink();
+			httpget = new HttpGet(urlString);
+			HttpClientContext context = HttpClientContext.create();
+			response = httpclient.execute(httpget,context);
+			HttpEntity entity = response.getEntity();
+			File savePathFile = new File(savePath);
+			if(!savePathFile.exists()){
+				savePathFile.mkdirs();
+			}
+		    File storeFile = new File(savePath + "/" + filename);
+		    output = new FileOutputStream(storeFile);
+		    entity.writeTo(output);
+            output.flush();
+            crawlLink.setStatusCode(response.getStatusLine().getStatusCode());
+            ContentType contentType = ContentType.getOrDefault(response.getEntity());
+            crawlLink.setContentType(contentType.getMimeType());
+	        return crawlLink;
+		} catch(Exception e){
+			Log.Error(e);
+			throw e;
+		} finally {
+			response.close();
+			output.close();
 		}
-		HttpClient client = new HttpClient();  
-        GetMethod get = new GetMethod(urlString);  
-        client.executeMethod(get);  
-        File storeFile = new File(savePath + "/" + filename);  
-        FileOutputStream output = new FileOutputStream(storeFile);  
-        //得到网络资源的字节数组,并写入文件  
-        output.write(get.getResponseBody());  
-        output.close();  
 	}
 	
 	public static void main(String[] args) throws Exception {
-		File sf = new File("D:/htmlContent/www.csdb.net/122");
-		if (!sf.exists()) {
-			sf.mkdirs();
-		}
+		CrawlLink crawlLink = new CrawlLink();
+		crawlLink.setLink("http://demo.jspxcms.com:80");
+		HtmlHandle.parseUrlToCrawlLink(crawlLink);
+		System.out.println(crawlLink.getContentType());
 	}
 	
 
