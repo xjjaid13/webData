@@ -22,6 +22,7 @@ public class Test {
 		crawlBug.setBugId(1);
 		TestJDBC test = (TestJDBC) context.getBean("testJDBC");
 		System.out.println(test.select(crawlBug).size());
+		
 	}
 	
 }
