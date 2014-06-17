@@ -1,6 +1,5 @@
 package com.util;
 
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CommonHandle {
 

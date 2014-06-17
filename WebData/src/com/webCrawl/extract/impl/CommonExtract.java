@@ -6,14 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.util.DataHandle;
+import com.util.CrawlHandle;
 import com.util.FileHandle;
 import com.webCrawl.entity.CrawlBug;
 import com.webCrawl.entity.ECrawlBug;
@@ -37,32 +33,7 @@ public class CommonExtract extends ECrawlBug implements IExtract{
 		File localPathFile = new File(path);
 		if(localPathFile.exists()){
 			String localFileContent = FileHandle.readFile(path);
-			
-			Document doc = Jsoup.parse(localFileContent);
-	        Elements links = doc.select("a[href]");
-	        Elements media = doc.select("[src]");
-	        Elements imports = doc.select("link[href]");
-	        
-	        for (Element src : links) {
-	        	String href = src.attr("href");
-	        	if(!DataHandle.isNullOrEmpty(href)){
-	        		list.add(href);
-	        	}
-	        }
-	        
-	        for (Element src : media) {
-	        	String href = src.attr("src");
-	        	if(!DataHandle.isNullOrEmpty(href)){
-	        		list.add(href);
-	        	}
-	        }
- 
-			for (Element src : imports) {
-				String href = src.attr("href");
-				if(!DataHandle.isNullOrEmpty(href)){
-					list.add(href);
-				}
-		    }
+			list = CrawlHandle.returnExtract(localFileContent);
 		}
 		Set<String> result = new HashSet<String>();
 		if(list != null){

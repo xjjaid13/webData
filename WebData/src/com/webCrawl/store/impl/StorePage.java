@@ -3,6 +3,7 @@ package com.webCrawl.store.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.util.CrawlHandle;
 import com.util.HtmlHandle;
 import com.util.Log;
 import com.webCrawl.entity.CrawlBug;
@@ -32,7 +33,7 @@ public class StorePage extends ECrawlLink implements IStorePage{
 	@Override
 	public String store(String url) {
 		try{
-			String savePath = crawlBug.getSavePath() + url.replaceAll("http(.*?)//(.+?)/(.*)", "$2/$3").replace(":", "-");
+			String savePath = crawlBug.getSavePath() + CrawlHandle.returnPathUrl(url);
 			if(!savePath.endsWith("/")){
 				int lastIndex = savePath.lastIndexOf("/");
 				savePath = savePath.substring(0,lastIndex);

@@ -25,7 +25,7 @@ public class ArrayBlockingQueueWaitList extends ECrawlBug implements IWaitList{
 	@Override
 	public void setCrawlBug(CrawlBug crawlBug) {
 		this.crawlBug = crawlBug;
-		queue = new ArrayBlockingQueue<String>(100000000,true);
+		queue = new ArrayBlockingQueue<String>(1000000,true);
 		List<CrawlLink> crawlLinkList = crawlLinkService.queryWaitListLink(crawlBug);
 		if(!DataHandle.isNullOrEmpty(crawlLinkList)){
 			for(CrawlLink crawlLink : crawlLinkList){
@@ -44,6 +44,5 @@ public class ArrayBlockingQueueWaitList extends ECrawlBug implements IWaitList{
 		queue.offer(url);
 		crawlLinkService.insertCrawlLink(crawlBug, url);
 	}
-	
 
 }
